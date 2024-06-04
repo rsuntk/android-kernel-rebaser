@@ -1,5 +1,17 @@
 #!/usr/bin/env bash
 
+#
+# Rissu changes os June 4 2024: Make it without
+# cloning OEM source. Just rebase it where the script
+# running, which is on the top of kernel tree
+#
+
+# Detect kernel tree
+if [ ! -f $(pwd)/Makefile ] && [ ! -d $(pwd)/kernel ]; then
+	printf "${RED}Invalid kernel tree${NORMAL}\n"
+ 	exit 1;
+fi
+
 # Colours
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -10,13 +22,12 @@ PROJECT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
 
 # Variables
 ACK_REPO="https://android.googlesource.com/kernel/common.git"
-OEM_KERNEL=${1}
-ACK_BRANCH=${2}
+ACK_BRANCH=${1}
 
 # Help Function
 usage() {
-	echo -e "${0} \"link to oem kernel source (git)\" \"ack-branch\"
-	>> eg: ${0} \"https://github.com/MiCode/Xiaomi_Kernel_OpenSource.git -b dandelion-q-oss\" \"android-4.9-q\""
+	echo -e "${0} \"ack-branch\"
+	>> eg: ${0} \"android-4.9-q\""
 }
 
 # Abort Function
@@ -25,27 +36,20 @@ abort() {
 	exit 1
 }
 
-# Clone the OEM Kernel Source
-git clone --depth=1 --single-branch $(echo ${OEM_KERNEL}) oem
-
 # Clone the Android Common Kernel Source
-git clone --single-branch -b ${ACK_BRANCH} ${ACK_REPO} kernel
+git clone --single-branch -b ${ACK_BRANCH} ${ACK_REPO} kernel_rebased
 
 # Get the OEM Kernel's Version
-cd oem
 OEM_KERNEL_VERSION=$(make kernelversion)
-cd -
 
 # Hard Reset ACK to ${OEM_KERNEL_VERSION}
-cd kernel
+cd kernel_rebased
 OEM_KERNEL_VER_SHORT_SHA=$(git log --oneline ${ACK_BRANCH} Makefile | grep -i ${OEM_KERNEL_VERSION} | grep -i merge | cut -d ' ' -f1)
 git reset --hard ${OEM_KERNEL_VER_SHORT_SHA}
 cd -
 
 # Get the list of Directories of the OEM Kernel
-cd oem
 OEM_DIR_LIST=$(find -type d -printf "%P\n" | grep -v / | grep -v .git)
-cd -
 
 # Start Rebasing
 cd kernel
@@ -54,8 +58,8 @@ for i in ${OEM_DIR_LIST}; do
 done
 
 cd -
-cp -r oem/* kernel/
-cd kernel
+cp -r $(pwd)/* kernel_rebased/
+cd kernel_rebased
 
 for i in ${OEM_DIR_LIST}; do
 	git add ${i}
