@@ -52,7 +52,7 @@ cd -
 OEM_DIR_LIST=$(find -type d -printf "%P\n" | grep -v / | grep -v .git)
 
 # Start Rebasing
-cd kernel
+cd kernel_rebased
 for i in ${OEM_DIR_LIST}; do
 	rm -rf ${i}
 done
