@@ -6,16 +6,16 @@
 # running, which is on the top of kernel tree
 #
 
+# Colours
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+NORMAL='\033[0m'
+
 # Detect kernel tree
 if [ ! -f $(pwd)/Makefile ] && [ ! -d $(pwd)/kernel ]; then
 	printf "${RED}Invalid kernel tree${NORMAL}\n"
  	exit 1;
 fi
-
-# Colours
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-NORMAL='\033[0m'
 
 # Project Directory
 PROJECT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null && pwd )"
