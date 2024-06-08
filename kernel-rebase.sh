@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #
-# Rissu changes os June 4 2024: Make it without
+# Rissu changes on June 4 2024: Make it without
 # cloning OEM source. Just rebase it where the script
 # running, which is on the top of kernel tree
 #
@@ -29,6 +29,10 @@ usage() {
 	echo -e "${0} \"ack-branch\"
 	>> eg: ${0} \"android-4.9-q\""
 }
+
+if [ $# != 1 ]; then
+	usage;
+fi
 
 # Abort Function
 abort() {
