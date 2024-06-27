@@ -2,11 +2,13 @@
 A script to rebase an OEM kernel to Android Common Kernel base
 
 ## How to use?
+1. Put this script on your kernel tree root.
+2. Execute this command
 ```bash
-$ ./kernel-rebase.sh "<link to oem kernel source (git)>" "<ack-branch>"
+$ ./kernel-rebase.sh "<ack-branch>"
 ```
 
 ### Example:
 ```bash
-./kernel-rebase.sh "https://github.com/MiCode/Xiaomi_Kernel_OpenSource.git -b dandelion-q-oss" "android-4.9-q"
+./kernel-rebase.sh "android-4.9-q"
 ```
