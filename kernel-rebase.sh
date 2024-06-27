@@ -12,7 +12,7 @@ GREEN='\033[0;32m'
 NORMAL='\033[0m'
 
 # Detect kernel tree
-if [ ! -f $(pwd)/Makefile ] && [ ! -d $(pwd)/kernel ]; then
+if [ ! -d $(pwd)/drivers ] && [ ! -d $(pwd)/kernel ] && [ ! -d $(pwd)/net ]; then
 	printf "${RED}Invalid kernel tree${NORMAL}\n"
  	exit 1;
 fi
@@ -65,6 +65,11 @@ done
 cd -
 cp -r $(pwd)/* kernel_rebased/
 cd kernel_rebased
+
+# ensure kernel_rebased/ folder is not included into kernel_rebased/ folder!
+if [ -d $(pwd)/kernel_rebased ]; then
+	rm $(pwd)/kernel_rebased -f
+fi
 
 for i in ${OEM_DIR_LIST}; do
 	git add ${i}
