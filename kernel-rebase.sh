@@ -17,7 +17,13 @@ ACK_BRANCH=${2}
 usage() {
 	echo -e "${0} \"link to oem kernel source (git)\" \"ack-branch\"
 	>> eg: ${0} \"https://github.com/MiCode/Xiaomi_Kernel_OpenSource.git -b dandelion-q-oss\" \"android-4.9-q\""
+	exit 1;
 }
+
+# if argument is less than 2, do not continue
+[ $# -lt 2 ] && usage;
+# if argument is more than 2, do not continue (rare case)
+[ $# -gt 2 ] && usage;
 
 # Abort Function
 abort() {
