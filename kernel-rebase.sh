@@ -20,11 +20,6 @@ usage() {
 	exit 1;
 }
 
-# if argument is less than 2, do not continue
-[ $# -lt 2 ] && usage;
-# if argument is more than 2, do not continue (rare case)
-[ $# -gt 2 ] && usage;
-
 # Abort Function
 abort() {
 	[ ! -z "${@}" ] && echo -e ${RED}"${@}"${NORMAL}
@@ -65,11 +60,10 @@ cd kernel
 
 for i in ${OEM_DIR_LIST}; do
 	git add ${i}
-	git commit -s -m "${i}: Import OEM Changes"
 done
 
 git add .
-git commit -s -m "Import Remaining OEM Changes"
+git commit -s -m "Import OEM Changes"
 
 cd -
 
