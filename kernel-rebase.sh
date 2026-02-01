@@ -63,7 +63,7 @@ for i in ${OEM_DIR_LIST}; do
 done
 
 git add .
-git commit -s -m "Import OEM Changes"
+git commit -s -m "Import $EXTRA Changes"
 
 cd -
 
